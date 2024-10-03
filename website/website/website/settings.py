@@ -120,7 +120,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Set the path to your static files
 
 STATICFILES_DIRS = [
-    BASE_DIR / "staticfiles",
+    os.path.join(BASE_DIR, 'static'),  # or wherever your custom static files are
 ]
 
 
