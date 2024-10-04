@@ -11,6 +11,7 @@
     <p><strong>Category:</strong> {{ component.category.name }}</p>
     <p><strong>Description:</strong> {{ component.description }}</p>
 
-    <a href="{% url 'component-list' %}">Back to Component List</a>
+{% include 'catalog/footer.html' %}
+
 </body>
 </html>
