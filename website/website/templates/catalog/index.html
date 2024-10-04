@@ -1,4 +1,3 @@
-<!-- components/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +47,9 @@
     <tbody>
         {% for component in components %}
             <tr>
-                <td>{{ component.name }}</td>
+                <td>
+                    <a href="{% url 'component-detail' component.pk %}">{{ component.name }}</a>
+                </td>
                 <td>{{ component.manufacturer }}</td>
                 <td>{{ component.category.name }}</td>
                 <td>{{ component.description }}</td>
