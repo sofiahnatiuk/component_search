@@ -48,7 +48,7 @@
         {% for component in components %}
             <tr>
                 <td>
-                    <a href="{% url 'component-detail' component.pk %}">{{ component.name }}</a>
+                    <a href="{% url 'component-detail/' component.pk %}">{{ component.name }}</a>
                 </td>
                 <td>{{ component.manufacturer }}</td>
                 <td>{{ component.category.name }}</td>
