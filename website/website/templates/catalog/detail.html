@@ -4,6 +4,8 @@
     <title>{{ component.name }} - Details</title>
 </head>
 <body>
+{% include 'catalog/header.html' %}
+
     <h1>{{ component.name }}</h1>
     <p><strong>Manufacturer:</strong> {{ component.manufacturer }}</p>
     <p><strong>Category:</strong> {{ component.category.name }}</p>
