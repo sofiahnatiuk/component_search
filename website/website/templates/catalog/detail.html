@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ component.name }} - Details</title>
+</head>
+<body>
+    <h1>{{ component.name }}</h1>
+    <p><strong>Manufacturer:</strong> {{ component.manufacturer }}</p>
+    <p><strong>Category:</strong> {{ component.category.name }}</p>
+    <p><strong>Description:</strong> {{ component.description }}</p>
+
+    <a href="{% url 'component-list' %}">Back to Component List</a>
+</body>
+</html>
