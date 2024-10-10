@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 # Create your views here.
 from django.http import HttpResponse
 from django.db.models import Q
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 from .models import Component, Category
 
 
@@ -44,3 +44,6 @@ class ComponentListView(ListView):
             )
         return Component.objects.all()
 
+
+class AboutView(TemplateView):
+    template_name = 'catalog/about.html'
