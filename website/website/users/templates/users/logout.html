@@ -1,0 +1,13 @@
+{% extends 'catalog/header.html' %}
+
+{% block title %}Logout{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Logout</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Confirm Logout</button>
+    </form>
+</div>
+{% endblock %}

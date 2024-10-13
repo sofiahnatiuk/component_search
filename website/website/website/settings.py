@@ -103,6 +103,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 LOGIN_REDIRECT_URL = 'component-list'
+LOGOUT_REDIRECT_URL = 'component-list'
 
 
 # Internationalization
