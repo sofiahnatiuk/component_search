@@ -25,8 +25,12 @@
 
 
         <div class="text-end">
-            <a href="{% url 'login' %}" class="btn btn-outline-light me-2">Login</a>
-            <a href="{% url 'register' %}" class="btn btn-warning">Sign-up</a>
+            {% if user.is_authenticated %}
+                    <span class="text-white me-2">Hello, {{ user.username }}!</span>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline-light me-2">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-warning">Sign-up</a>
+                {% endif %}
         </div>
       </div>
     </div>
