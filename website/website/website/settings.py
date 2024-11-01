@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['hs4.pythonanywhere.com', '127.0.0.1', 'localhost']
 
 INSTALLED_APPS = [
     'users',
+    'social_django',
     'catalog.apps.CatalogConfig',
     'django.contrib.admin',
     'django.contrib.auth',
