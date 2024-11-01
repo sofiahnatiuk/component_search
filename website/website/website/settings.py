@@ -51,6 +51,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('<SOCIAL_AUTH_GOOGLE_OAUTH2_KEY>')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
 MIDDLEWARE = [
+    'social_django.middleware.SocialAuthExceptionMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
