@@ -25,14 +25,14 @@ SECRET_KEY = 'django-insecure-e!^$@honoaf)j@nhj*qkkokroz2ei8&=qlcq=7d%pg_j0x6gqs
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['hs4.pythonanywhere.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'users',
-    'social_django',
+    # 'social_django',
     'catalog.apps.CatalogConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -47,8 +47,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY', 'key')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET', 'key')
 
 MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware',
@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'website.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / '/home/hs4/hs4.pythonanywhere.com/website/website/db.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
