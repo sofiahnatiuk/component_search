@@ -1,13 +1,13 @@
 {% extends 'catalog/header.html' %}
 
-{% block title %}Logout{% endblock %}
+{% block title %}Вийти{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h2>Logout</h2>
+    <h2>Вийти</h2>
     <form method="POST">
         {% csrf_token %}
-        <button type="submit" class="btn btn-primary">Confirm Logout</button>
+        <button type="submit" class="btn btn-primary">Підтвердіть вихід з облікового запису</button>
     </form>
 </div>
 {% endblock %}

@@ -8,10 +8,11 @@
 
 <div class = "container">
     <h1>{{ component.name }}</h1>
-    <p><strong>Manufacturer:</strong> {{ component.manufacturer }}</p>
-    <p><strong>Category:</strong> {{ component.category.name }}</p>
-    <p><strong>Description:</strong> {{ component.description }}</p>
-
+    <p><strong>Виробник:</strong> {{ component.manufacturer }}</p>
+    <p><strong>Категорія:</strong> {{ component.category.name }}</p>
+    <p><strong>Опис:</strong> {{ component.description }}</p>
+    {% if user.is_authenticated %}
+        <p><i>Відсутня чи некоректна інформація? Надішліть скаргу</i></p>
 </div>
 
 

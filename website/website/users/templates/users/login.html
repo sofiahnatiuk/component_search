@@ -1,18 +1,17 @@
 {% extends 'catalog/header.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Увійти{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h2>Login</h2>
-    <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a>
+    <h2>Увійти</h2>
 
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="btn btn-primary">Увійти</button>
     </form>
-    <p>Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
+    <p>Не маєте облікового запису? <a href="{% url 'register' %}">Реєстрація</a></p>
 </div>
 {% endblock %}
 
