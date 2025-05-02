@@ -1,9 +1,22 @@
-<h2>Report an issue with {{ component.name }}</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %} {{ component.name }} - Detail {% endblock %}</title>
+</head>
+<body>
+{% include 'catalog/header.html' %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit Report</button>
-</form>
+<div class = "container">
+    <h2>Відправити скаргу на об'єкт {{ component.name }}</h2>
 
-<p><a href="{% url 'component-detail' component.id %}">Back to component details</a></p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Відправити скаргу</button>
+    </form>
+
+    <p><a href="{% url 'component-detail' component.id %}">Назад</a></p>
+</div>
+{% include 'catalog/footer.html' %}
+</body>
+</html>

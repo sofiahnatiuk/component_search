@@ -12,11 +12,11 @@
     <table>
         <thead>
             <tr>
-                <th>Component</th>
-                <th>Report Comment</th>
-                <th>Date Sent</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th>Компонент</th>
+                <th>Скарга</th>
+                <th>Дата відправлення </th>
+                <th>Статус</th>
+                <th>Дія</th>
             </tr>
         </thead>
         <tbody>
@@ -27,24 +27,24 @@
                     <td>{{ report.date_sent }}</td>
                     <td>
                         {% if report.is_read %}
-                            <span style="color: green;">Read</span>
+                            <span style="color: green;">Оброблено</span>
                         {% else %}
-                            <span style="color: red;">Unread</span>
+                            <span style="color: red;">В обробці</span>
                         {% endif %}
                     </td>
                     <td>
                         <a href="{% url 'toggle_report_read' report.id %}">
                             {% if report.is_read %}
-                                Mark as Unread
+                                Позначити як оброблено
                             {% else %}
-                                Mark as Read
+                                Позначити як в обробці
                             {% endif %}
                         </a>
                     </td>
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="5">No reports available.</td>
+                    <td colspan="5">Скарг не знайдено.</td>
                 </tr>
             {% endfor %}
         </tbody>
