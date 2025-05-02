@@ -21,4 +21,3 @@ urlpatterns = [
     path('components/<int:pk>/edit/', ComponentUpdateView.as_view(), name='component_edit'),
     path('components/<int:pk>/delete/', ComponentDeleteView.as_view(), name='component_delete'),
 ]
-

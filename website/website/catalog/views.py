@@ -90,18 +90,18 @@ class StaffRequiredMixin(UserPassesTestMixin):
 class ComponentCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateView):
     model = Component
     form_class = ComponentForm
-    template_name = 'component_form.html'
-    success_url = reverse_lazy('component_list')  # Change to your actual list view name
+    template_name = 'catalog/component_form.html'
+    success_url = reverse_lazy('component-list')  # Change to your actual list view name
 
 
 class ComponentUpdateView(LoginRequiredMixin, StaffRequiredMixin, UpdateView):
     model = Component
     form_class = ComponentForm
-    template_name = 'component_form.html'
-    success_url = reverse_lazy('component_list')
+    template_name = 'catalog/component_form.html'
+    success_url = reverse_lazy('component-list')
 
 
 class ComponentDeleteView(LoginRequiredMixin, StaffRequiredMixin, DeleteView):
     model = Component
-    template_name = 'component_confirm_delete.html'
-    success_url = reverse_lazy('component_list')
+    template_name = 'catalog/component_confirm_delete.html'
+    success_url = reverse_lazy('component-list')

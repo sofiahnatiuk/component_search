@@ -1,10 +1,20 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Підтвердити зміни</title>
+</head>
+<body>
+{% include 'catalog/header.html' %}
 {% block content %}
   <h2>Підтвердити видалення</h2>
   <p>Ви впевнені, що хочете видалити "{{ object }}"?</p>
   <form method="post">
     {% csrf_token %}
     <button type="submit">Так, видалити</button>
-    <a href="{% url 'component_list' %}">Скасувати</a>
+    <a href="{% url 'component-list' %}">Скасувати</a>
   </form>
 {% endblock %}
+{% include 'catalog/footer.html' %}
+
+</body>
+</html>
