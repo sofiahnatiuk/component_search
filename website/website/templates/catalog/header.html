@@ -17,6 +17,10 @@
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
             <li><a href="{% url 'component-list' %}" class="nav-link px-2 text-white">Головна</a></li>
             <li><a href="{% url 'about' %}" class="nav-link px-2 text-white">Про проєкт</a></li>
+            <li><a href="{% url 'category_tree' %}" class="nav-link px-2 text-white">Категорії</a></li>
+            {% if user.is_staff %}
+                <li><a href="{% url 'report_list' %}" class="nav-link px-2 text-white">Скарги</a></li>
+            {% endif %}
         </ul>
 
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" method="GET" action="">

@@ -20,6 +20,13 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def total_component_count(self):
+        count = self.component_set.count()
+        for child in self.category_set.all():
+            count += child.total_component_count
+        return count
+
 
 class Report(models.Model):
     component = models.ForeignKey("Component", on_delete=models.CASCADE, related_name="reports")

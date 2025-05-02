@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Про проєкт</title>
+</head>
+<body>
+
+{% block content %}
+<li>
+    <a href="{% url 'category-detail' category.pk %}">
+        {{ category.name }} ({{ category.total_component_count }})
+    </a>
+    {% if category.category_set.exists %}
+        <ul>
+            {% for subcategory in category.category_set.all %}
+                {% include "catalog/category_node.html" with category=subcategory %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</li>
+
+{% endblock %}
+
+</body>
+</html>

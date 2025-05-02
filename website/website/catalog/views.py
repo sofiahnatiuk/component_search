@@ -105,3 +105,14 @@ class ComponentDeleteView(LoginRequiredMixin, StaffRequiredMixin, DeleteView):
     model = Component
     template_name = 'catalog/component_confirm_delete.html'
     success_url = reverse_lazy('component-list')
+
+
+class CategoryTreeView(TemplateView):
+    template_name = 'catalog/category_tree.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Only top-level categories (those with no parent)
+        context['categories'] = Category.objects.filter(parent__isnull=True)
+        return context
+

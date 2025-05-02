@@ -1,12 +1,14 @@
 from django.urls import path
 
 from .views import(
-    ComponentListView, ComponentDetailView, CategoryDetailView, AboutView, report_component,
+    ComponentListView,
+    ComponentDetailView, CategoryDetailView, AboutView, report_component,
     report_list,
     toggle_report_read,
     ComponentCreateView,
     ComponentUpdateView,
     ComponentDeleteView,
+    CategoryTreeView
 )
 
 urlpatterns = [
@@ -20,4 +22,5 @@ urlpatterns = [
     path('components/create/', ComponentCreateView.as_view(), name='component_create'),
     path('components/<int:pk>/edit/', ComponentUpdateView.as_view(), name='component_edit'),
     path('components/<int:pk>/delete/', ComponentDeleteView.as_view(), name='component_delete'),
+    path('categories/tree/', CategoryTreeView.as_view(), name='category_tree'),
 ]

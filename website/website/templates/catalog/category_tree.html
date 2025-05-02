@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Про проєкт</title>
+</head>
+<body>
+{% include 'catalog/header.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Категорії</h2>
+    <ul>
+        {% for category in categories %}
+            {% include "catalog/category_node.html" with category=category %}
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+
+{% include 'catalog/footer.html' %}
+
+
+</body>
+</html>
