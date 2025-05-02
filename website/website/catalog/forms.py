@@ -1,5 +1,5 @@
 from django import forms
-from .models import Report
+from .models import Report, Component
 
 
 class ReportForm(forms.ModelForm):
@@ -15,3 +15,15 @@ class ReportForm(forms.ModelForm):
             'cols': 150
         })
     )
+
+
+class ComponentForm(forms.ModelForm):
+    class Meta:
+        model = Component
+        fields = ['name', 'manufacturer', 'category', 'description']
+        labels = {
+            'name': 'Назва',
+            'manufacturer': 'Виробник',
+            'category': 'Категорія',
+            'description': 'Опис',
+        }

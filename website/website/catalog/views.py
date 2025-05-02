@@ -1,11 +1,13 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse
 from django.db.models import Q
-from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.admin.views.decorators import staff_member_required
+from django.urls import reverse_lazy
 from .models import Component, Category, Report
-from .forms import ReportForm
+from .forms import ReportForm, ComponentForm
 
 
 class CategoryDetailView(ListView):
@@ -79,3 +81,27 @@ def toggle_report_read(request, report_id):
     report.is_read = not report.is_read
     report.save()
     return redirect('report_list')
+
+class StaffRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
+
+
+class ComponentCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateView):
+    model = Component
+    form_class = ComponentForm
+    template_name = 'component_form.html'
+    success_url = reverse_lazy('component_list')  # Change to your actual list view name
+
+
+class ComponentUpdateView(LoginRequiredMixin, StaffRequiredMixin, UpdateView):
+    model = Component
+    form_class = ComponentForm
+    template_name = 'component_form.html'
+    success_url = reverse_lazy('component_list')
+
+
+class ComponentDeleteView(LoginRequiredMixin, StaffRequiredMixin, DeleteView):
+    model = Component
+    template_name = 'component_confirm_delete.html'
+    success_url = reverse_lazy('component_list')

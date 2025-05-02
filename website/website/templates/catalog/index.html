@@ -12,6 +12,12 @@
 
 
   <div class="container"><h1>Список компонентів</h1>
+    {% if request.user.is_staff %}
+    <div class="mb-3">
+        <a class="btn btn-success" href="{% url 'component_create' %}">Додати компонент</a>
+    </div>
+    {% endif %}
+
     <table class="table table-bordered table-striped table-hover">
     <thead class="thead-dark">
         <tr>
@@ -20,6 +26,10 @@
             <th>Категорія</th>
             <th>Опис</th>
         </tr>
+        {% if request.user.is_staff %}
+            <th>Дії</th>
+        {% endif %}
+
     </thead>
     <tbody>
         {% for component in components %}
@@ -30,6 +40,12 @@
                 <td>{{ component.manufacturer }}</td>
                 <td><a href="{% url 'category-detail' component.category.pk %}">{{ component.category.name }}</a></td>
                 <td>{{ component.description }}</td>
+                {% if request.user.is_staff %}
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'component_edit' component.pk %}">Редагувати</a>
+                        <a class="btn btn-sm btn-danger" href="{% url 'component_delete' component.pk %}">Видалити</a>
+                    </td>
+                {% endif %}
             </tr>
         {% empty %}
             <tr>
