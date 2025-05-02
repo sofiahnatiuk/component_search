@@ -2,19 +2,28 @@ from django.urls import path
 
 from .views import(
     ComponentListView,
-    ComponentDetailView, CategoryDetailView, AboutView, report_component,
+    ComponentDetailView,
+    CategoryDetailView,
+    AboutView,
+    report_component,
     report_list,
     toggle_report_read,
     ComponentCreateView,
     ComponentUpdateView,
     ComponentDeleteView,
-    CategoryTreeView
+    CategoryTreeView,
+    CategoryCreateView,
+    CategoryDeleteView,
+    CategoryUpdateView,
 )
 
 urlpatterns = [
     path('', ComponentListView.as_view(), name='component-list'),
     path('component/<int:pk>/', ComponentDetailView.as_view(), name='component-detail'),
     path('category/<int:pk>/', CategoryDetailView.as_view(), name='category-detail'),
+    path('categories/add/', CategoryCreateView.as_view(), name='category-add'),
+    path('categories/<int:pk>/edit/', CategoryUpdateView.as_view(), name='category-edit'),
+    path('categories/<int:pk>/delete/', CategoryDeleteView.as_view(), name='category-delete'),
     path('about/', AboutView.as_view(), name='about'),
     path('component/<int:component_id>/report/', report_component, name='report_component'),
     path('reports/', report_list, name='report_list'),

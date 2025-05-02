@@ -15,6 +15,12 @@
         <ul>
             {% for subcategory in category.category_set.all %}
                 {% include "catalog/category_node.html" with category=subcategory %}
+                 {% if request.user.is_staff %}
+                    <small>
+                        [<a href="{% url 'category-edit' category.pk %}">редагувати</a>]
+                        [<a href="{% url 'category-delete' category.pk %}">видалити</a>]
+                    </small>
+                {% endif %}
             {% endfor %}
         </ul>
     {% endif %}

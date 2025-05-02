@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Про проєкт</title>
+</head>
+<body>
+{% include 'catalog/header.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Видалити категорію: {{ object.name }}</h2>
+  <p>Ви впевнені, що хочете видалити цю категорію? Це також видалить усі підкатегорії та повʼязані компоненти.</p>
+  <form method="post">
+    {% csrf_token %}
+    <a href="{% url 'category_tree' %}" class="btn btn-secondary">Скасувати</a>
+    <button type="submit" class="btn btn-danger">Видалити</button>
+  </form>
+</div>
+{% endblock %}
+
+{% include 'catalog/footer.html' %}
+
+
+</body>
+</html>

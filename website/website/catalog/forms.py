@@ -1,5 +1,5 @@
 from django import forms
-from .models import Report, Component
+from .models import Report, Component, Category
 
 
 class ReportForm(forms.ModelForm):
@@ -26,4 +26,15 @@ class ComponentForm(forms.ModelForm):
             'manufacturer': 'Виробник',
             'category': 'Категорія',
             'description': 'Опис',
+        }
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name', 'parent', 'description']
+        labels = {
+            'name': 'Назва категорії',
+            'parent': 'Батьківська категорія',
+            'description': 'Опис (необовʼязково)',
         }

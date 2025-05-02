@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import reverse_lazy
 from .models import Component, Category, Report
-from .forms import ReportForm, ComponentForm
+from .forms import ReportForm, ComponentForm, CategoryForm
 
 
 class CategoryDetailView(ListView):
@@ -116,3 +116,21 @@ class CategoryTreeView(TemplateView):
         context['categories'] = Category.objects.filter(parent__isnull=True)
         return context
 
+class CategoryCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = 'catalog/category_form.html'
+    success_url = reverse_lazy('category_tree')
+
+
+class CategoryUpdateView(LoginRequiredMixin, StaffRequiredMixin, UpdateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = 'catalog/category_form.html'
+    success_url = reverse_lazy('category_tree')
+
+
+class CategoryDeleteView(LoginRequiredMixin, StaffRequiredMixin, DeleteView):
+    model = Category
+    template_name = 'catalog/category_confirm_delete.html'
+    success_url = reverse_lazy('category_tree')
