@@ -6,10 +6,27 @@
 <div class="container">
     <h2>Реєстрація</h2>
     <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Зареєструватися</button>
-    </form>
+    {% csrf_token %}
+    <table style="border-collapse: collapse;">
+        <tr>
+            <td><label for="{{ form.username.id_for_label }}">Ім'я користувача:</label></td>
+            <td>{{ form.username }}</td>
+        </tr>
+        <tr>
+            <td><label for="{{ form.password1.id_for_label }}">Пароль:</label></td>
+            <td>{{ form.password1 }}</td>
+        </tr>
+        <tr>
+            <td><label for="{{ form.password2.id_for_label }}">Повторіть пароль:</label></td>
+            <td>{{ form.password2 }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="submit">Зареєструватися</button></td>
+        </tr>
+    </table>
+</form>
+
 </div>
 {% endblock %}
 {% include 'catalog/footer.html' %}

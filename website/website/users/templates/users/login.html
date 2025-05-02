@@ -8,9 +8,22 @@
 
     <form method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Увійти</button>
+        <table style="border-collapse: collapse;">
+            <tr>
+                <td><label for="{{ form.username.id_for_label }}">Ім’я користувача:</label></td>
+                <td>{{ form.username }}</td>
+            </tr>
+            <tr>
+                <td><label for="{{ form.password.id_for_label }}">Пароль:</label></td>
+                <td>{{ form.password }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button type="submit" class="btn btn-primary">Увійти</button></td>
+            </tr>
+        </table>
     </form>
+
     <p>Не маєте облікового запису? <a href="{% url 'register' %}">Реєстрація</a></p>
 </div>
 {% endblock %}
