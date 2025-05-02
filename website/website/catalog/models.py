@@ -1,7 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
-# Create your models here.
 class Component(models.Model):
     name = models.CharField(max_length=255)
     manufacturer = models.CharField(max_length=255)
@@ -19,3 +19,14 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Report(models.Model):
+    component = models.ForeignKey("Component", on_delete=models.CASCADE, related_name="reports")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.TextField()
+    date_sent = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Report on {self.component.name} by {self.user.username}"

@@ -12,7 +12,7 @@
     <p><strong>Категорія:</strong> {{ component.category.name }}</p>
     <p><strong>Опис:</strong> {{ component.description }}</p>
     {% if user.is_authenticated %}
-        <p><i>Відсутня чи некоректна інформація? Надішліть скаргу</i></p>
+    <a href="{% url 'report_component' component.id %}"><p><i>Відсутня чи некоректна інформація? Надішліть скаргу</i></p></a>
     {% endif %}
 </div>
 

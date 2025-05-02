@@ -9,7 +9,46 @@
 <div class = "container">
     <h1>Скарги</h1>
     <p><i>Список скарг від користувачів щодо неповних чи некоректних даних компонентів</i></p>
-    <!-- add a list of reports: time sent, viewed_status, component name + link, report comment-->
+    <table>
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Report Comment</th>
+                <th>Date Sent</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in reports %}
+                <tr>
+                    <td><a href="{% url 'component-detail' pk=report.component.id %}">{{ report.component.name }}</a></td>
+                    <td>{{ report.comment }}</td>
+                    <td>{{ report.date_sent }}</td>
+                    <td>
+                        {% if report.is_read %}
+                            <span style="color: green;">Read</span>
+                        {% else %}
+                            <span style="color: red;">Unread</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'toggle_report_read' report.id %}">
+                            {% if report.is_read %}
+                                Mark as Unread
+                            {% else %}
+                                Mark as Read
+                            {% endif %}
+                        </a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">No reports available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 
 {% include 'catalog/footer.html' %}

@@ -1,0 +1,9 @@
+<h2>Report an issue with {{ component.name }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit Report</button>
+</form>
+
+<p><a href="{% url 'component-detail' component.id %}">Back to component details</a></p>
