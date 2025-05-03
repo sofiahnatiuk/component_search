@@ -8,8 +8,14 @@ class Component(models.Model):
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
     description = models.TextField(null=True, blank=True)
 
+    package_type = models.CharField("Тип корпусу", max_length=100, null=True, blank=True)
+    operating_voltage = models.DecimalField("Робоча напруга (V)", max_digits=10, decimal_places=2, null=True, blank=True)
+    operating_current = models.DecimalField("Робочий струм (A)", max_digits=10, decimal_places=3, null=True, blank=True)
+    power = models.DecimalField("Потужність (W)", max_digits=10, decimal_places=2, null=True, blank=True)
+
     def __str__(self):
         return f"{self.manufacturer} {self.name}"
+
 
 
 class Category(models.Model):

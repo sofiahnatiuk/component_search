@@ -20,12 +20,19 @@ class ReportForm(forms.ModelForm):
 class ComponentForm(forms.ModelForm):
     class Meta:
         model = Component
-        fields = ['name', 'manufacturer', 'category', 'description']
+        fields = [
+            'name', 'manufacturer', 'category', 'description',
+            'package_type', 'operating_voltage', 'operating_current', 'power'
+        ]
         labels = {
             'name': 'Назва',
             'manufacturer': 'Виробник',
             'category': 'Категорія',
             'description': 'Опис',
+            'package_type': 'Тип корпусу',
+            'operating_voltage': 'Робоча напруга (V)',
+            'operating_current': 'Робочий струм (A)',
+            'power': 'Потужність (W)',
         }
 
 
