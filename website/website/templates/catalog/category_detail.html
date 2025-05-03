@@ -14,16 +14,35 @@
 
         <table class="table table-bordered table-striped table-hover">
             <thead>
-                <tr>
-                    <th>Назва</th>
-                    <th>Виробник</th>
-                    <th>Опис</th>
-                    <th>Тип корпусу</th>
-                    <th>Робоча напруга (V)</th>
-                    <th>Робочий струм (A)</th>
-                    <th>Потужність (W)</th>
-                </tr>
-            </thead>
+    <tr>
+        <th>
+            <a href="?sort=name">Назва ↑</a> /
+            <a href="?sort=-name">↓</a>
+        </th>
+        <th>
+            <a href="?sort=manufacturer">Виробник ↑</a> /
+            <a href="?sort=-manufacturer">↓</a>
+        </th>
+        <th>Опис</th>
+        <th>
+            <a href="?sort=package_type">Тип корпусу ↑</a> /
+            <a href="?sort=-package_type">↓</a>
+        </th>
+        <th>
+            <a href="?sort=operating_voltage">Напруга ↑</a> /
+            <a href="?sort=-operating_voltage">↓</a>
+        </th>
+        <th>
+            <a href="?sort=operating_current">Струм ↑</a> /
+            <a href="?sort=-operating_current">↓</a>
+        </th>
+        <th>
+            <a href="?sort=power">Потужність ↑</a> /
+            <a href="?sort=-power">↓</a>
+        </th>
+    </tr>
+</thead>
+
             <tbody>
                 {% for component in components %}
                     <tr>

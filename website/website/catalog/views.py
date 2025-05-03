@@ -17,7 +17,23 @@ class CategoryDetailView(ListView):
 
     def get_queryset(self):
         self.category = get_object_or_404(Category, pk=self.kwargs['pk'])
-        return Component.objects.filter(category=self.category)
+        sort = self.request.GET.get('sort')
+
+        allowed_sorts = [
+            'name', '-name',
+            'manufacturer', '-manufacturer',
+            'operating_voltage', '-operating_voltage',
+            'operating_current', '-operating_current',
+            'power', '-power',
+            'package_type', '-package_type',
+        ]
+
+        queryset = Component.objects.filter(category=self.category)
+
+        if sort in allowed_sorts:
+            queryset = queryset.order_by(sort)
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -37,14 +53,31 @@ class ComponentListView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q')
+        sort = self.request.GET.get('sort')
+
+        allowed_sorts = [
+            'name', '-name',
+            'manufacturer', '-manufacturer',
+            'operating_voltage', '-operating_voltage',
+            'operating_current', '-operating_current',
+            'power', '-power',
+            'package_type', '-package_type',
+        ]
+
+        queryset = Component.objects.all()
+
         if query:
-            return Component.objects.filter(
+            queryset = queryset.filter(
                 Q(name__icontains=query) |
                 Q(manufacturer__icontains=query) |
                 Q(description__icontains=query) |
                 Q(category__name__icontains=query)
             )
-        return Component.objects.all()
+
+        if sort in allowed_sorts:
+            queryset = queryset.order_by(sort)
+
+        return queryset
 
 
 class AboutView(TemplateView):
