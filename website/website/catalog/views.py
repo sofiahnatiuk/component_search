@@ -66,6 +66,7 @@ class ComponentListView(ListView):
 
         queryset = Component.objects.all()
 
+        # Text search
         if query:
             queryset = queryset.filter(
                 Q(name__icontains=query) |
@@ -74,11 +75,50 @@ class ComponentListView(ListView):
                 Q(category__name__icontains=query)
             )
 
+        # Filtering by category (exact match by ID or name)
+        category = self.request.GET.get('category')
+        if category:
+            queryset = queryset.filter(category__name=category)
+
+        # Filtering by package_type (exact match)
+        package_type = self.request.GET.get('package_type')
+        if package_type:
+            queryset = queryset.filter(package_type=package_type)
+
+        # Filtering by voltage range
+        voltage_min = self.request.GET.get('voltage_min')
+        voltage_max = self.request.GET.get('voltage_max')
+        if voltage_min:
+            queryset = queryset.filter(operating_voltage__gte=voltage_min)
+        if voltage_max:
+            queryset = queryset.filter(operating_voltage__lte=voltage_max)
+
+        # Filtering by current range
+        current_min = self.request.GET.get('current_min')
+        current_max = self.request.GET.get('current_max')
+        if current_min:
+            queryset = queryset.filter(operating_current__gte=current_min)
+        if current_max:
+            queryset = queryset.filter(operating_current__lte=current_max)
+
+        # Filtering by power range
+        power_min = self.request.GET.get('power_min')
+        power_max = self.request.GET.get('power_max')
+        if power_min:
+            queryset = queryset.filter(power__gte=power_min)
+        if power_max:
+            queryset = queryset.filter(power__lte=power_max)
+
+        # Sorting
         if sort in allowed_sorts:
             queryset = queryset.order_by(sort)
 
         return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()  # for the filter dropdown
+        return context
 
 class AboutView(TemplateView):
     template_name = 'catalog/about.html'

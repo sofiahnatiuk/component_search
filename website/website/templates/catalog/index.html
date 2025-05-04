@@ -13,6 +13,48 @@
 <div class="container">
     <h1>Список компонентів</h1>
 
+    <form method="get" class="row g-3 mb-4">
+    <div class="col-md-2">
+        <select name="category" class="form-select">
+            <option value="">Усі категорії</option>
+            {% for cat in categories %}
+                <option value="{{ cat.name }}" {% if request.GET.category == cat.name %}selected{% endif %}>
+                    {{ cat.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <input type="text" name="package_type" class="form-control" placeholder="Тип корпусу" value="{{ request.GET.package_type }}">
+    </div>
+
+    <div class="col-md-1">
+        <input type="number" step="any" name="voltage_min" class="form-control" placeholder="V ≥" value="{{ request.GET.voltage_min }}">
+    </div>
+    <div class="col-md-1">
+        <input type="number" step="any" name="voltage_max" class="form-control" placeholder="V ≤" value="{{ request.GET.voltage_max }}">
+    </div>
+
+    <div class="col-md-1">
+        <input type="number" step="any" name="current_min" class="form-control" placeholder="A ≥" value="{{ request.GET.current_min }}">
+    </div>
+    <div class="col-md-1">
+        <input type="number" step="any" name="current_max" class="form-control" placeholder="A ≤" value="{{ request.GET.current_max }}">
+    </div>
+
+    <div class="col-md-1">
+        <input type="number" step="any" name="power_min" class="form-control" placeholder="W ≥" value="{{ request.GET.power_min }}">
+    </div>
+    <div class="col-md-1">
+        <input type="number" step="any" name="power_max" class="form-control" placeholder="W ≤" value="{{ request.GET.power_max }}">
+    </div>
+
+    <div class="col-md-12 d-flex justify-content-start">
+        <button type="submit" class="btn btn-primary me-2">Фільтрувати</button>
+        <a href="{% url 'component-list' %}" class="btn btn-secondary">Очистити</a>
+    </div>
+</form>
     {% if request.user.is_staff %}
         <div class="mb-3">
             <a class="btn btn-success" href="{% url 'component_create' %}">Додати компонент</a>
@@ -64,8 +106,8 @@
     <div class="pagination">
         <span class="step-links">
             {% if components.has_previous %}
-                <a href="?page=1">&laquo; початок</a>
-                <a href="?page={{ components.previous_page_number }}">назад</a>
+                <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page=1">&laquo; початок</a>
+                <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ components.previous_page_number }}">назад</a>
             {% endif %}
 
             <span class="current">
@@ -73,8 +115,8 @@
             </span>
 
             {% if components.has_next %}
-                <a href="?page={{ components.next_page_number }}">далі</a>
-                <a href="?page={{ components.paginator.num_pages }}">кінець &raquo;</a>
+                <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ components.next_page_number }}">далі</a>
+                <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ components.paginator.num_pages }}">кінець &raquo;</a>
             {% endif %}
         </span>
     </div>
