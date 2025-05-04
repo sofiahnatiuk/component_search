@@ -12,36 +12,72 @@
     <div class="container">
         <h1>{{ category.name }} – Компоненти</h1>
 
+        <!-- Filter Form -->
+        <form method="get" class="mb-3">
+            <div class="row">
+                <!-- Voltage Range -->
+                <div class="col-md-2">
+                    <input type="number" name="voltage_min" value="{{ request.GET.voltage_min }}" class="form-control" placeholder="Min Voltage">
+                </div>
+                <div class="col-md-2">
+                    <input type="number" name="voltage_max" value="{{ request.GET.voltage_max }}" class="form-control" placeholder="Max Voltage">
+                </div>
+
+                <!-- Current Range -->
+                <div class="col-md-2">
+                    <input type="number" name="current_min" value="{{ request.GET.current_min }}" class="form-control" placeholder="Min Current">
+                </div>
+                <div class="col-md-2">
+                    <input type="number" name="current_max" value="{{ request.GET.current_max }}" class="form-control" placeholder="Max Current">
+                </div>
+
+                <!-- Power Range -->
+                <div class="col-md-2">
+                    <input type="number" name="power_min" value="{{ request.GET.power_min }}" class="form-control" placeholder="Min Power">
+                </div>
+                <div class="col-md-2">
+                    <input type="number" name="power_max" value="{{ request.GET.power_max }}" class="form-control" placeholder="Max Power">
+                </div>
+
+                <!-- Submit Button -->
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Фільтрувати</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Component Table -->
         <table class="table table-bordered table-striped table-hover">
             <thead>
-    <tr>
-        <th>
-            <a href="?sort=name">Назва ↑</a> /
-            <a href="?sort=-name">↓</a>
-        </th>
-        <th>
-            <a href="?sort=manufacturer">Виробник ↑</a> /
-            <a href="?sort=-manufacturer">↓</a>
-        </th>
-        <th>Опис</th>
-        <th>
-            <a href="?sort=package_type">Тип корпусу ↑</a> /
-            <a href="?sort=-package_type">↓</a>
-        </th>
-        <th>
-            <a href="?sort=operating_voltage">Напруга ↑</a> /
-            <a href="?sort=-operating_voltage">↓</a>
-        </th>
-        <th>
-            <a href="?sort=operating_current">Струм ↑</a> /
-            <a href="?sort=-operating_current">↓</a>
-        </th>
-        <th>
-            <a href="?sort=power">Потужність ↑</a> /
-            <a href="?sort=-power">↓</a>
-        </th>
-    </tr>
-</thead>
+                <tr>
+                    <th>
+                        <a href="?sort=name">Назва ↑</a> /
+                        <a href="?sort=-name">↓</a>
+                    </th>
+                    <th>
+                        <a href="?sort=manufacturer">Виробник ↑</a> /
+                        <a href="?sort=-manufacturer">↓</a>
+                    </th>
+                    <th>Опис</th>
+                    <th>
+                        <a href="?sort=package_type">Тип корпусу ↑</a> /
+                        <a href="?sort=-package_type">↓</a>
+                    </th>
+                    <th>
+                        <a href="?sort=operating_voltage">Напруга ↑</a> /
+                        <a href="?sort=-operating_voltage">↓</a>
+                    </th>
+                    <th>
+                        <a href="?sort=operating_current">Струм ↑</a> /
+                        <a href="?sort=-operating_current">↓</a>
+                    </th>
+                    <th>
+                        <a href="?sort=power">Потужність ↑</a> /
+                        <a href="?sort=-power">↓</a>
+                    </th>
+                    <th>Дії</th>
+                </tr>
+            </thead>
 
             <tbody>
                 {% for component in components %}
@@ -53,14 +89,46 @@
                         <td>{{ component.operating_voltage|default:"—" }}</td>
                         <td>{{ component.operating_current|default:"—" }}</td>
                         <td>{{ component.power|default:"—" }}</td>
+                        <td>
+                            {% if component in request.user.favorite_components.all %}
+                                <form method="post" action="{% url 'remove_from_favorites' component.pk %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Видалити з улюблених</button>
+                                </form>
+                            {% else %}
+                                <form method="post" action="{% url 'add_to_favorites' component.pk %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success">Додати до улюблених</button>
+                                </form>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="7">Компонентів у даній категорії не знайдено.</td>
+                        <td colspan="8">Компонентів у даній категорії не знайдено.</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+        <!-- Pagination (if applicable) -->
+        {% if is_paginated %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if components.has_previous %}
+                        <a href="?page=1">&laquo; перша</a>
+                        <a href="?page={{ components.previous_page_number }}">назад</a>
+                    {% endif %}
+                    <span class="current">
+                        Сторінка {{ components.number }} з {{ components.paginator.num_pages }}.
+                    </span>
+                    {% if components.has_next %}
+                        <a href="?page={{ components.next_page_number }}">вперед</a>
+                        <a href="?page={{ components.paginator.num_pages }}">остання &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% endif %}
     </div>
 
     {% include 'catalog/footer.html' %}

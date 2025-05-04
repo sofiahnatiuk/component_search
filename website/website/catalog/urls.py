@@ -15,6 +15,9 @@ from .views import(
     CategoryCreateView,
     CategoryDeleteView,
     CategoryUpdateView,
+    FavoriteComponentListView,
+    add_to_favorites,
+    remove_from_favorites,
 )
 
 urlpatterns = [
@@ -32,4 +35,7 @@ urlpatterns = [
     path('components/<int:pk>/edit/', ComponentUpdateView.as_view(), name='component_edit'),
     path('components/<int:pk>/delete/', ComponentDeleteView.as_view(), name='component_delete'),
     path('categories/tree/', CategoryTreeView.as_view(), name='category_tree'),
+    path('favorites/', FavoriteComponentListView.as_view(), name='favorites'),
+    path('favorites/add/<int:pk>/', add_to_favorites, name='add_to_favorites'),
+    path('favorites/remove/<int:pk>/', remove_from_favorites, name='remove_from_favorites'),
 ]

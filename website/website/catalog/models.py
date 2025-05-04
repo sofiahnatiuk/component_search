@@ -7,6 +7,7 @@ class Component(models.Model):
     manufacturer = models.CharField(max_length=255)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
     description = models.TextField(null=True, blank=True)
+    favorited_by = models.ManyToManyField(User, related_name='favorite_components', blank=True)
 
     package_type = models.CharField("Тип корпусу", max_length=100, null=True, blank=True)
     operating_voltage = models.DecimalField("Робоча напруга (V)", max_digits=10, decimal_places=2, null=True, blank=True)

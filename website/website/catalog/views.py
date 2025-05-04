@@ -5,119 +5,104 @@ from django.views.generic import ListView, DetailView, TemplateView, CreateView,
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib import messages
 from django.urls import reverse_lazy
 from .models import Component, Category, Report
 from .forms import ReportForm, ComponentForm, CategoryForm
 
 
-class CategoryDetailView(ListView):
-    model = Component
-    template_name = 'catalog/category_detail.html'
-    context_object_name = 'components'
+class ComponentQueryMixin:
+    allowed_sorts = [
+        'name', '-name',
+        'manufacturer', '-manufacturer',
+        'operating_voltage', '-operating_voltage',
+        'operating_current', '-operating_current',
+        'power', '-power',
+        'package_type', '-package_type',
+    ]
 
-    def get_queryset(self):
-        self.category = get_object_or_404(Category, pk=self.kwargs['pk'])
-        sort = self.request.GET.get('sort')
-
-        allowed_sorts = [
-            'name', '-name',
-            'manufacturer', '-manufacturer',
-            'operating_voltage', '-operating_voltage',
-            'operating_current', '-operating_current',
-            'power', '-power',
-            'package_type', '-package_type',
-        ]
-
-        queryset = Component.objects.filter(category=self.category)
-
-        if sort in allowed_sorts:
-            queryset = queryset.order_by(sort)
-
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['category'] = self.category
-        return context
-
-class ComponentDetailView(DetailView):
-    model = Component
-    template_name = 'catalog/detail.html'
-    context_object_name = 'component'
-
-class ComponentListView(ListView):
-    model = Component
-    template_name = 'catalog/index.html'
-    context_object_name = 'components'
-    paginate_by = 10
-
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        sort = self.request.GET.get('sort')
-
-        allowed_sorts = [
-            'name', '-name',
-            'manufacturer', '-manufacturer',
-            'operating_voltage', '-operating_voltage',
-            'operating_current', '-operating_current',
-            'power', '-power',
-            'package_type', '-package_type',
-        ]
-
-        queryset = Component.objects.all()
+    def get_filtered_sorted_queryset(self, base_queryset):
+        request = self.request
+        sort = request.GET.get('sort')
 
         # Text search
+        query = request.GET.get('q')
         if query:
-            queryset = queryset.filter(
+            base_queryset = base_queryset.filter(
                 Q(name__icontains=query) |
                 Q(manufacturer__icontains=query) |
                 Q(description__icontains=query) |
                 Q(category__name__icontains=query)
             )
 
-        # Filtering by category (exact match by ID or name)
-        category = self.request.GET.get('category')
+        # Filtering by category name or ID
+        category = request.GET.get('category')
         if category:
-            queryset = queryset.filter(category__name=category)
+            base_queryset = base_queryset.filter(category__name=category)
 
-        # Filtering by package_type (exact match)
-        package_type = self.request.GET.get('package_type')
+        # Filtering by package_type
+        package_type = request.GET.get('package_type')
         if package_type:
-            queryset = queryset.filter(package_type=package_type)
+            base_queryset = base_queryset.filter(package_type=package_type)
 
-        # Filtering by voltage range
-        voltage_min = self.request.GET.get('voltage_min')
-        voltage_max = self.request.GET.get('voltage_max')
-        if voltage_min:
-            queryset = queryset.filter(operating_voltage__gte=voltage_min)
-        if voltage_max:
-            queryset = queryset.filter(operating_voltage__lte=voltage_max)
+        # Range filters
+        vmin, vmax = request.GET.get('voltage_min'), request.GET.get('voltage_max')
+        if vmin:
+            base_queryset = base_queryset.filter(operating_voltage__gte=vmin)
+        if vmax:
+            base_queryset = base_queryset.filter(operating_voltage__lte=vmax)
 
-        # Filtering by current range
-        current_min = self.request.GET.get('current_min')
-        current_max = self.request.GET.get('current_max')
-        if current_min:
-            queryset = queryset.filter(operating_current__gte=current_min)
-        if current_max:
-            queryset = queryset.filter(operating_current__lte=current_max)
+        cmin, cmax = request.GET.get('current_min'), request.GET.get('current_max')
+        if cmin:
+            base_queryset = base_queryset.filter(operating_current__gte=cmin)
+        if cmax:
+            base_queryset = base_queryset.filter(operating_current__lte=cmax)
 
-        # Filtering by power range
-        power_min = self.request.GET.get('power_min')
-        power_max = self.request.GET.get('power_max')
-        if power_min:
-            queryset = queryset.filter(power__gte=power_min)
-        if power_max:
-            queryset = queryset.filter(power__lte=power_max)
+        pmin, pmax = request.GET.get('power_min'), request.GET.get('power_max')
+        if pmin:
+            base_queryset = base_queryset.filter(power__gte=pmin)
+        if pmax:
+            base_queryset = base_queryset.filter(power__lte=pmax)
 
         # Sorting
-        if sort in allowed_sorts:
-            queryset = queryset.order_by(sort)
+        if sort in self.allowed_sorts:
+            base_queryset = base_queryset.order_by(sort)
 
-        return queryset
+        return base_queryset
+
+
+class CategoryDetailView(ComponentQueryMixin, ListView):
+    model = Component
+    template_name = 'catalog/category_detail.html'
+    context_object_name = 'components'
+
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, pk=self.kwargs['pk'])
+        base_qs = Component.objects.filter(category=self.category)
+        return self.get_filtered_sorted_queryset(base_qs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()  # for the filter dropdown
+        context['category'] = self.category
+        return context
+class ComponentDetailView(DetailView):
+    model = Component
+    template_name = 'catalog/detail.html'
+    context_object_name = 'component'
+
+class ComponentListView(ComponentQueryMixin, ListView):
+    model = Component
+    template_name = 'catalog/index.html'
+    context_object_name = 'components'
+    paginate_by = 10
+
+    def get_queryset(self):
+        base_qs = Component.objects.all()
+        return self.get_filtered_sorted_queryset(base_qs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
         return context
 
 class AboutView(TemplateView):
@@ -207,3 +192,25 @@ class CategoryDeleteView(LoginRequiredMixin, StaffRequiredMixin, DeleteView):
     model = Category
     template_name = 'catalog/category_confirm_delete.html'
     success_url = reverse_lazy('category_tree')
+
+
+@login_required
+def add_to_favorites(request, pk):
+    component = get_object_or_404(Component, pk=pk)
+    request.user.favorite_components.add(component)
+    messages.success(request, f"{component.name} додано до улюблених.")
+    return redirect(request.META.get('HTTP_REFERER', 'component-list'))
+
+@login_required
+def remove_from_favorites(request, pk):
+    component = get_object_or_404(Component, pk=pk)
+    request.user.favorite_components.remove(component)
+    messages.success(request, f"{component.name} видалено з улюблених.")
+    return redirect(request.META.get('HTTP_REFERER', 'component-list'))
+
+class FavoriteComponentListView(ComponentListView):
+    def get_queryset(self):
+        base_qs = super().get_queryset()
+        return base_qs.filter(favorited_by=self.request.user)
+
+

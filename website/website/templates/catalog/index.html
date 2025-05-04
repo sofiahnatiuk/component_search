@@ -14,47 +14,48 @@
     <h1>Список компонентів</h1>
 
     <form method="get" class="row g-3 mb-4">
-    <div class="col-md-2">
-        <select name="category" class="form-select">
-            <option value="">Усі категорії</option>
-            {% for cat in categories %}
-                <option value="{{ cat.name }}" {% if request.GET.category == cat.name %}selected{% endif %}>
-                    {{ cat.name }}
-                </option>
-            {% endfor %}
-        </select>
-    </div>
+        <div class="col-md-2">
+            <select name="category" class="form-select">
+                <option value="">Усі категорії</option>
+                {% for cat in categories %}
+                    <option value="{{ cat.name }}" {% if request.GET.category == cat.name %}selected{% endif %}>
+                        {{ cat.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
 
-    <div class="col-md-2">
-        <input type="text" name="package_type" class="form-control" placeholder="Тип корпусу" value="{{ request.GET.package_type }}">
-    </div>
+        <div class="col-md-2">
+            <input type="text" name="package_type" class="form-control" placeholder="Тип корпусу" value="{{ request.GET.package_type }}">
+        </div>
 
-    <div class="col-md-1">
-        <input type="number" step="any" name="voltage_min" class="form-control" placeholder="V ≥" value="{{ request.GET.voltage_min }}">
-    </div>
-    <div class="col-md-1">
-        <input type="number" step="any" name="voltage_max" class="form-control" placeholder="V ≤" value="{{ request.GET.voltage_max }}">
-    </div>
+        <div class="col-md-1">
+            <input type="number" step="any" name="voltage_min" class="form-control" placeholder="V ≥" value="{{ request.GET.voltage_min }}">
+        </div>
+        <div class="col-md-1">
+            <input type="number" step="any" name="voltage_max" class="form-control" placeholder="V ≤" value="{{ request.GET.voltage_max }}">
+        </div>
 
-    <div class="col-md-1">
-        <input type="number" step="any" name="current_min" class="form-control" placeholder="A ≥" value="{{ request.GET.current_min }}">
-    </div>
-    <div class="col-md-1">
-        <input type="number" step="any" name="current_max" class="form-control" placeholder="A ≤" value="{{ request.GET.current_max }}">
-    </div>
+        <div class="col-md-1">
+            <input type="number" step="any" name="current_min" class="form-control" placeholder="A ≥" value="{{ request.GET.current_min }}">
+        </div>
+        <div class="col-md-1">
+            <input type="number" step="any" name="current_max" class="form-control" placeholder="A ≤" value="{{ request.GET.current_max }}">
+        </div>
 
-    <div class="col-md-1">
-        <input type="number" step="any" name="power_min" class="form-control" placeholder="W ≥" value="{{ request.GET.power_min }}">
-    </div>
-    <div class="col-md-1">
-        <input type="number" step="any" name="power_max" class="form-control" placeholder="W ≤" value="{{ request.GET.power_max }}">
-    </div>
+        <div class="col-md-1">
+            <input type="number" step="any" name="power_min" class="form-control" placeholder="W ≥" value="{{ request.GET.power_min }}">
+        </div>
+        <div class="col-md-1">
+            <input type="number" step="any" name="power_max" class="form-control" placeholder="W ≤" value="{{ request.GET.power_max }}">
+        </div>
 
-    <div class="col-md-12 d-flex justify-content-start">
-        <button type="submit" class="btn btn-primary me-2">Фільтрувати</button>
-        <a href="{% url 'component-list' %}" class="btn btn-secondary">Очистити</a>
-    </div>
-</form>
+        <div class="col-md-12 d-flex justify-content-start">
+            <button type="submit" class="btn btn-primary me-2">Фільтрувати</button>
+            <a href="{% url 'component-list' %}" class="btn btn-secondary">Очистити</a>
+        </div>
+    </form>
+
     {% if request.user.is_staff %}
         <div class="mb-3">
             <a class="btn btn-success" href="{% url 'component_create' %}">Додати компонент</a>
@@ -62,46 +63,72 @@
     {% endif %}
 
     <table class="table table-bordered table-striped table-hover">
-        <thead class="thead-dark">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                <a href="?sort=name">Назва ↑</a> /
+                <a href="?sort=-name">↓</a>
+            </th>
+            <th>
+                <a href="?sort=manufacturer">Виробник ↑</a> /
+                <a href="?sort=-manufacturer">↓</a>
+            </th>
+            <th>Категорія</th>
+            <th>Опис</th>
+            <th>
+                <a href="?sort=package_type">Тип корпусу ↑</a> /
+                <a href="?sort=-package_type">↓</a>
+            </th>
+            <th>
+                <a href="?sort=operating_voltage">Напруга ↑</a> /
+                <a href="?sort=-operating_voltage">↓</a>
+            </th>
+            <th>
+                <a href="?sort=operating_current">Струм ↑</a> /
+                <a href="?sort=-operating_current">↓</a>
+            </th>
+            <th>
+                <a href="?sort=power">Потужність ↑</a> /
+                <a href="?sort=-power">↓</a>
+            </th>
+            {% if request.user.is_authenticated %}
+                <th>Дії</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for component in components %}
             <tr>
-                <th>Назва</th>
-                <th>Виробник</th>
-                <th>Категорія</th>
-                <th>Опис</th>
-                <th>Тип корпусу</th>
-                <th>Робоча напруга (V)</th>
-                <th>Робочий струм (A)</th>
-                <th>Потужність (W)</th>
-                {% if request.user.is_staff %}
-                    <th>Дії</th>
+                <td><a href="{% url 'component-detail' component.pk %}">{{ component.name }}</a></td>
+                <td>{{ component.manufacturer }}</td>
+                <td><a href="{% url 'category-detail' component.category.pk %}">{{ component.category.name }}</a></td>
+                <td>{{ component.description|truncatechars:100 }}</td>
+                <td>{{ component.package_type|default:"—" }}</td>
+                <td>{{ component.operating_voltage|default:"—" }}</td>
+                <td>{{ component.operating_current|default:"—" }}</td>
+                <td>{{ component.power|default:"—" }}</td>
+                {% if request.user.is_authenticated %}
+                    <td>
+                        {% if request.user.is_staff %}
+                            <a class="btn btn-sm btn-primary me-1" href="{% url 'component_edit' component.pk %}">Редагувати</a>
+                            <a class="btn btn-sm btn-danger me-1" href="{% url 'component_delete' component.pk %}">Видалити</a>
+                        {% endif %}
+                        {% if user in component.favorited_by.all %}
+                            <a href="{% url 'remove_from_favorites' component.pk %}" class="btn btn-sm btn-warning">Видалити з улюблених</a>
+                        {% else %}
+                            <a href="{% url 'add_to_favorites' component.pk %}" class="btn btn-sm btn-outline-primary">Улюблене</a>
+                        {% endif %}
+                    </td>
                 {% endif %}
             </tr>
-        </thead>
-        <tbody>
-            {% for component in components %}
-                <tr>
-                    <td><a href="{% url 'component-detail' component.pk %}">{{ component.name }}</a></td>
-                    <td>{{ component.manufacturer }}</td>
-                    <td><a href="{% url 'category-detail' component.category.pk %}">{{ component.category.name }}</a></td>
-                    <td>{{ component.description|truncatechars:100 }}</td>
-                    <td>{{ component.package_type|default:"—" }}</td>
-                    <td>{{ component.operating_voltage|default:"—" }}</td>
-                    <td>{{ component.operating_current|default:"—" }}</td>
-                    <td>{{ component.power|default:"—" }}</td>
-                    {% if request.user.is_staff %}
-                        <td>
-                            <a class="btn btn-sm btn-primary" href="{% url 'component_edit' component.pk %}">Редагувати</a>
-                            <a class="btn btn-sm btn-danger" href="{% url 'component_delete' component.pk %}">Видалити</a>
-                        </td>
-                    {% endif %}
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="9">Компонентів не знайдено.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        {% empty %}
+            <tr>
+                <td colspan="{% if request.user.is_authenticated %}9{% else %}8{% endif %}">Компонентів не знайдено.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 
     <div class="pagination">
         <span class="step-links">
