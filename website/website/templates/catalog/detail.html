@@ -8,6 +8,7 @@
 
 <div class="container">
     <h1>{{ component.name }}</h1>
+    <img src="{{ component.display_image_url }}" alt="{{ component.name }}" style="max-width: 300px; height: auto;">
     <p><strong>Виробник:</strong> {{ component.manufacturer }}</p>
     <p><strong>Категорія:</strong> {{ component.category.name }}</p>
     <p><strong>Опис:</strong> {{ component.description }}</p>

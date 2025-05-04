@@ -10,13 +10,20 @@ class Component(models.Model):
     favorited_by = models.ManyToManyField(User, related_name='favorite_components', blank=True)
 
     package_type = models.CharField("Тип корпусу", max_length=100, null=True, blank=True)
-    operating_voltage = models.DecimalField("Робоча напруга (V)", max_digits=10, decimal_places=2, null=True, blank=True)
+    operating_voltage = models.DecimalField("Робоча напруга (V)", max_digits=10, decimal_places=2, null=True,
+                                            blank=True)
     operating_current = models.DecimalField("Робочий струм (A)", max_digits=10, decimal_places=3, null=True, blank=True)
     power = models.DecimalField("Потужність (W)", max_digits=10, decimal_places=2, null=True, blank=True)
+
+    image_url = models.URLField("Зображення (URL)", max_length=600, null=True, blank=True)
 
     def __str__(self):
         return f"{self.manufacturer} {self.name}"
 
+    @property
+    def display_image_url(self):
+        DEFAULT_IMAGE_URL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4ks8qNKu-FxA4GcthRL2dkkKQxJB_q7dprgWvbGthnU6nn6B7FdQDVdEkkTauXDubOLk&usqp=CAU"
+        return self.image_url or DEFAULT_IMAGE_URL
 
 
 class Category(models.Model):

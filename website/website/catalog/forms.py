@@ -22,7 +22,8 @@ class ComponentForm(forms.ModelForm):
         model = Component
         fields = [
             'name', 'manufacturer', 'category', 'description',
-            'package_type', 'operating_voltage', 'operating_current', 'power'
+            'package_type', 'operating_voltage', 'operating_current', 'power',
+            'image_url'
         ]
         labels = {
             'name': 'Назва',
@@ -33,8 +34,12 @@ class ComponentForm(forms.ModelForm):
             'operating_voltage': 'Робоча напруга (V)',
             'operating_current': 'Робочий струм (A)',
             'power': 'Потужність (W)',
+            'image_url': 'Зображення (URL)',
         }
 
+        widgets = {
+            'image_url': forms.URLInput(attrs={'placeholder': 'https://...'}),
+        }
 
 class CategoryForm(forms.ModelForm):
     class Meta:
