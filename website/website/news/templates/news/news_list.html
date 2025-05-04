@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>News Aggregator</title>
+    <title>Новини електроніки</title>
 </head>
 <body>
-    <h1>Latest News</h1>
+{% include 'news/header.html' %}
+<div class="container">
+    <h1>Останні новини</h1>
     {% for item in news_items %}
-        <div style="margin-bottom: 20px;">
+        <div class="container">
             <h2><a href="{{ item.link }}" target="_blank">{{ item.title }}</a></h2>
             <img src="{{ item.cover_image_url }}" alt="cover" style="max-width:200px;">
             <p>{{ item.thumbnail }}</p>
         </div>
     {% endfor %}
+</div>
+
+{% include 'news/footer.html' %}
+
 </body>
 </html>
