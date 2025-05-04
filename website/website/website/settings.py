@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 INSTALLED_APPS = [
     'users',
+    'news',
     'catalog.apps.CatalogConfig',
     'django.contrib.admin',
     'django.contrib.auth',
