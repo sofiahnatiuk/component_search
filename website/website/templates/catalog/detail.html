@@ -13,6 +13,18 @@
     <p><strong>Категорія:</strong> {{ component.category.name }}</p>
     <p><strong>Опис:</strong> {{ component.description }}</p>
 
+    {% if request.user.is_authenticated %}
+        {% if request.user.is_staff %}
+            <a class="btn btn-sm btn-primary me-1" href="{% url 'component_edit' component.pk %}">Редагувати</a>
+            <a class="btn btn-sm btn-danger me-1" href="{% url 'component_delete' component.pk %}">Видалити</a>
+        {% endif %}
+        {% if user in component.favorited_by.all %}
+            <a href="{% url 'remove_from_favorites' component.pk %}" class="btn btn-sm btn-warning">Видалити з улюблених</a>
+        {% else %}
+            <a href="{% url 'add_to_favorites' component.pk %}" class="btn btn-sm btn-outline-primary">Улюблене</a>
+        {% endif %}
+    {% endif %}
+
     <h3>Технічні характеристики</h3>
     <ul>
         <li><strong>Тип корпусу:</strong> {{ component.package_type|default:"—" }}</li>

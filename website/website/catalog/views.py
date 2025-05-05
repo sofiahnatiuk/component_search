@@ -75,6 +75,7 @@ class CategoryDetailView(ComponentQueryMixin, ListView):
     model = Component
     template_name = 'catalog/category_detail.html'
     context_object_name = 'components'
+    paginate_by = 10
 
     def get_queryset(self):
         self.category = get_object_or_404(Category, pk=self.kwargs['pk'])
@@ -103,7 +104,10 @@ class ComponentListView(ComponentQueryMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        # No need to add page_obj manually, it is already added by ListView
         return context
+
+
 
 class AboutView(TemplateView):
     template_name = 'catalog/about.html'
