@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from .models import NewsItem
 
 
 def scrape_news():
@@ -9,8 +10,6 @@ def scrape_news():
     }
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, 'html.parser')
-
-    news_items = []
 
     for article in soup.select('div.post-single'):
         title_tag = article.select_one('h2.post-title a')
@@ -31,11 +30,9 @@ def scrape_news():
             if first_p:
                 thumbnail = first_p.text.strip()
 
-        news_items.append({
-            'title': title,
-            'link': link,
-            'thumbnail': thumbnail,
-            'cover_image_url': cover_image_url,
-        })
-
-    return news_items
+        NewsItem.objects.create(
+            title=title,
+            link=link,
+            thumbnail=thumbnail,
+            cover_image_url=cover_image_url,
+        )

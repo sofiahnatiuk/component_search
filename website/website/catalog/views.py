@@ -153,7 +153,7 @@ class ComponentCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateView):
     model = Component
     form_class = ComponentForm
     template_name = 'catalog/component_form.html'
-    success_url = reverse_lazy('component-list')  # Change to your actual list view name
+    success_url = reverse_lazy('component-list')
 
 
 class ComponentUpdateView(LoginRequiredMixin, StaffRequiredMixin, UpdateView):
@@ -216,5 +216,3 @@ class FavoriteComponentListView(ComponentListView):
     def get_queryset(self):
         base_qs = super().get_queryset()
         return base_qs.filter(favorited_by=self.request.user)
-
-

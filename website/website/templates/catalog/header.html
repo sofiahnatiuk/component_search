@@ -18,6 +18,7 @@
             <li><a href="{% url 'component-list' %}" class="nav-link px-2 text-white">Головна</a></li>
             <li><a href="{% url 'about' %}" class="nav-link px-2 text-white">Про проєкт</a></li>
             <li><a href="{% url 'category_tree' %}" class="nav-link px-2 text-white">Категорії</a></li>
+            <li><a href="{% url 'news_list' %}" class="nav-link px-2 text-white">Новини</a></li>
             {% if user.is_authenticated %}
                 <li><a href="{% url 'favorites' %}" class="nav-link px-2 text-white">Улюблені</a></li>
             {% endif %}
