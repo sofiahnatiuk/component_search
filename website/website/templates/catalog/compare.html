@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %} Compare elements {% endblock %}</title>
+</head>
+<body>
+{% include 'catalog/header.html' %}
+
+<h2>Порівняння компонентів</h2>
+
+<table class="table table-bordered table-hover align-middle text-center">
+    <thead class="table-light">
+        <tr>
+            <th>Атрибут</th>
+            {% for component in components %}
+                <th>{{ component.name }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Зображення</th>
+            {% for component in components %}
+                <td>
+                    <img src="{{ component.display_image_url }}" alt="{{ component.name }}" width="100">
+                </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Назва</th>
+            {% for component in components %}
+                <td>{{ component.name }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Виробник</th>
+            {% for component in components %}
+                <td>{{ component.manufacturer }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Категорія</th>
+            {% for component in components %}
+                <td>{{ component.category.name }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Опис</th>
+            {% for component in components %}
+                <td class="text-start" style="max-width: 300px;">{{ component.description|default:"—" }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Тип корпусу</th>
+            {% for component in components %}
+                <td>{{ component.package_type|default:"—" }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Робоча напруга (V)</th>
+            {% for component in components %}
+                <td>{{ component.operating_voltage|default:"—" }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Робочий струм (A)</th>
+            {% for component in components %}
+                <td>{{ component.operating_current|default:"—" }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Потужність (W)</th>
+            {% for component in components %}
+                <td>{{ component.power|default:"—" }}</td>
+            {% endfor %}
+        </tr>
+
+    </tbody>
+</table>
+
+{% include 'catalog/footer.html' %}
+</body>
+</html>

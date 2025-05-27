@@ -18,6 +18,9 @@ from .views import(
     FavoriteComponentListView,
     add_to_favorites,
     remove_from_favorites,
+    ComponentCompareView,
+    AddToCompareView,
+    RemoveFromCompareView,
 )
 
 urlpatterns = [
@@ -38,4 +41,7 @@ urlpatterns = [
     path('favorites/', FavoriteComponentListView.as_view(), name='favorites'),
     path('favorites/add/<int:pk>/', add_to_favorites, name='add_to_favorites'),
     path('favorites/remove/<int:pk>/', remove_from_favorites, name='remove_from_favorites'),
+    path('compare/', ComponentCompareView.as_view(), name='compare'),
+    path('compare/add/<int:pk>/', AddToCompareView.as_view(), name='add_to_compare'),
+    path('compare/remove/<int:pk>/', RemoveFromCompareView.as_view(), name='remove_from_compare'),
 ]

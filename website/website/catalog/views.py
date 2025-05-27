@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from .models import Component, Category, Report
 from .forms import ReportForm, ComponentForm, CategoryForm
+from django.views import View
 
 
 class ComponentQueryMixin:
@@ -216,3 +217,26 @@ class FavoriteComponentListView(ComponentListView):
     def get_queryset(self):
         base_qs = super().get_queryset()
         return base_qs.filter(favorited_by=self.request.user)
+
+
+class AddToCompareView(View):
+    def post(self, request, pk):
+        compare_list = request.session.get('compare_list', [])
+        if pk not in compare_list:
+            compare_list.append(pk)
+            request.session['compare_list'] = compare_list
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+
+class RemoveFromCompareView(View):
+    def post(self, request, pk):
+        compare_list = request.session.get('compare_list', [])
+        if pk in compare_list:
+            compare_list.remove(pk)
+            request.session['compare_list'] = compare_list
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+
+class ComponentCompareView(View):
+    def get(self, request):
+        compare_ids = request.session.get('compare_list', [])
+        components = Component.objects.filter(id__in=compare_ids)
+        return render(request, 'catalog/compare.html', {'components': components})

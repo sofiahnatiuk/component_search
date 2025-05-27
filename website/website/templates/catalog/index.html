@@ -63,6 +63,14 @@
         </div>
     {% endif %}
 
+    {% with request.session.compare_list|default:"" as compare_list %}
+    {% if compare_list|length >= 2 %}
+        <a href="{% url 'compare' %}" class="btn btn-outline-info mb-3">
+            Перейти до порівняння ({{ compare_list|length }})
+        </a>
+    {% endif %}
+{% endwith %}
+
     <table class="table table-bordered table-striped table-hover">
     <thead class="thead-dark">
         <tr>
@@ -113,6 +121,19 @@
                         {% else %}
                             <a href="{% url 'add_to_favorites' component.pk %}" class="btn btn-sm btn-outline-primary">Улюблене</a>
                         {% endif %}
+                        {% with request.session.compare_list|default:"" as compare_list %}
+                            {% if compare_list and component.id in compare_list %}
+                                <form action="{% url 'remove_from_compare' component.pk %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">− Порівняння</button>
+                                </form>
+                            {% else %}
+                                <form action="{% url 'add_to_compare' component.pk %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-success">+ Порівняння</button>
+                                </form>
+                            {% endif %}
+                        {% endwith %}
                     </td>
                 {% endif %}
             </tr>
